@@ -1,0 +1,30 @@
+name: Extract ZIP File
+
+on:
+  workflow_dispatch: # تشغيل يدوي عند الطلب
+
+jobs:
+  unzip_job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Create output directory
+        run: mkdir -p extracted
+
+      - name: Unzip the file
+        run: unzip sys3.zip -d extracted
+
+      - name: List extracted files
+        run: ls -R extracted
+
+      # اختياري: إذا كنت تريد حفظ النتائج في المستودع
+      - name: Commit and push extracted files
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add extracted
+          git commit -m "Added extracted ZIP content"
+          git push
