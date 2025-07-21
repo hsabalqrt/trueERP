@@ -1,30 +1,30 @@
-name: Extract ZIP File
+name: Extract sys3.zip to root
 
 on:
-  workflow_dispatch: # تشغيل يدوي عند الطلب
+  workflow_dispatch: # لتشغيله يدويًا من GitHub
 
 jobs:
-  unzip_job:
+  unzip:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Create output directory
-        run: mkdir -p extracted
+      - name: Download sys3.zip
+        run: |
+          curl -L -o sys3.zip https://github.com/hsabalqrt/trueERP/raw/main/sys3.zip
 
-      - name: Unzip the file
-        run: unzip sys3.zip -d extracted
+      - name: Unzip into root directory
+        run: unzip -o sys3.zip
 
-      - name: List extracted files
-        run: ls -R extracted
+      - name: Show extracted contents
+        run: ls -R
 
-      # اختياري: إذا كنت تريد حفظ النتائج في المستودع
       - name: Commit and push extracted files
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add extracted
-          git commit -m "Added extracted ZIP content"
+          git add .
+          git commit -m "Extracted sys3.zip to root"
           git push
